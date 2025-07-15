@@ -182,7 +182,8 @@ class AuthController {
 
   async refreshToken(req: Request, res: Response): Promise<void> {
     try {
-      const { refreshToken } = req.body;
+      //const { refreshToken } = req.body;
+      const refreshToken = req.body.refreshToken || req.cookies.refreshToken;
 
       if (!refreshToken) {
         res.status(400).json({
@@ -193,6 +194,17 @@ class AuthController {
       }
 
       const tokens = await authService.refreshToken(refreshToken);
+      res
+        .cookie("accessToken", tokens.accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
+        .cookie("refreshToken", tokens.refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        });
 
       res.json({
         success: true,
