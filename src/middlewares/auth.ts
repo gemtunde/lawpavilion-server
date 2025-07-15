@@ -21,7 +21,13 @@ export const authenticateToken = async (
   next: NextFunction
 ) => {
   // Check cookies instead of headers
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  let token = req.cookies.accessToken;
+
+  // Fallback to Authorization header if no cookie
+  if (!token && req.headers.authorization?.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
   if (!token) {
     return res.status(401).json({

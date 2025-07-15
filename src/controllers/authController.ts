@@ -183,7 +183,7 @@ class AuthController {
   async refreshToken(req: Request, res: Response): Promise<void> {
     try {
       //const { refreshToken } = req.body;
-      const refreshToken = req.body.refreshToken || req.cookies.refreshToken;
+      const refreshToken = req.cookies.refreshToken;
 
       if (!refreshToken) {
         res.status(400).json({
