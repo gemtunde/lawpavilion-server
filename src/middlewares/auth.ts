@@ -52,6 +52,7 @@ export const authenticateToken = async (
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      isVerified: user.isVerified,
       role: user.role,
     };
     next();
